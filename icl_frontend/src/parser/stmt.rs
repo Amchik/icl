@@ -140,6 +140,8 @@ where
 
             parse_assign_or_expr(token_stream, Some(lhs))
         }
+    } else if token_stream.check(Token::Define) {
+        parse_define_stmt(token_stream, ident, DefineHint::None)
     } else {
         parse_assign_or_expr(token_stream, Some(Expression::Atom(Atom::Ident(ident))))
     }
