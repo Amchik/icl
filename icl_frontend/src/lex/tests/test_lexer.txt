@@ -1,0 +1,8 @@
+// idk syntax btw
+import ceheki.org;
+
+/// The program entry point
+main(args) := fn { ... };
+
+Empty := struct { /* noop */ };
+

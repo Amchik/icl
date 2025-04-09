@@ -1,0 +1,10 @@
+[package]
+name = "icl_cringe"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+icl_frontend = { path = "../icl_frontend" }
+
+[lints]
+workspace = true

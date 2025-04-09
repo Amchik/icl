@@ -1,0 +1,16 @@
+[workspace]
+members = [ "icl_cringe","icl_frontend"]
+resolver = "3"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+deprecated_in_future = "warn"
+
+[workspace.lints.clippy]
+# Deny unexpected overflows
+arithmetic_side_effects = "warn"
+as_conversions = "warn"
+
+# Deny .unwrap() calls
+unwrap_used = "deny"
+
