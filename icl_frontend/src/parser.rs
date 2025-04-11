@@ -17,7 +17,7 @@ use std::iter::Peekable;
 
 use crate::{
     ast::single::SingleTokenTy,
-    lex::{TokenData, error::Error as LexError, token::Token},
+    lex::{error::Error as LexError, token::Token, TokenData},
 };
 
 /// Token stream.
@@ -33,6 +33,7 @@ pub struct TokenStream<'s, T: Iterator> {
 pub enum Error<'s> {
     Lex(LexError),
     UnexpectedToken(UnexpectedTokenError<'s>),
+    LiteralParsing(LiteralParsingError<'s>),
 }
 
 impl From<LexError> for Error<'_> {
@@ -44,6 +45,33 @@ impl<'s> From<UnexpectedTokenError<'s>> for Error<'s> {
     fn from(value: UnexpectedTokenError<'s>) -> Self {
         Self::UnexpectedToken(value)
     }
+}
+impl<'s> From<LiteralParsingError<'s>> for Error<'s> {
+    fn from(value: LiteralParsingError<'s>) -> Self {
+        Self::LiteralParsing(value)
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct LiteralParsingError<'s> {
+    pub token: TokenData<'s>,
+    pub kind: LiteralParsingErrorKind,
+}
+
+impl<'s> LiteralParsingError<'s> {
+    pub const fn new(token: TokenData<'s>, kind: LiteralParsingErrorKind) -> Self {
+        Self { token, kind }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum LiteralParsingErrorKind {
+    InvalidStringEscape(char),
+
+    InvalidIntegerDigit,
+    InvalidFloatDigit,
+
+    IntegerTooBig,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]

@@ -2,7 +2,7 @@
 
 use crate::{
     ast::{
-        atom::{Ident, Literal},
+        atom::{Ident, LiteralData},
         doc::{
             DefineArgs, DefineHint, DefineMeta, DefineMetaArgs, DefineOutput, DefineStmt,
             DefineStmtBody, DefineType, Document, DocumentStmt,
@@ -180,7 +180,7 @@ where
             let ident = Ident::parse(token_stream)?;
             let arg = if token_stream.check(Token::Equal) {
                 token_stream.consume(Token::Equal)?;
-                let literal = Literal::parse(token_stream)?;
+                let literal = LiteralData::parse(token_stream)?;
                 DefineMetaArgs::Pair(ident, literal)
             } else {
                 DefineMetaArgs::Single(ident)

@@ -1,12 +1,14 @@
 //! Atom, Identifier and Literals
 
+use std::borrow::Cow;
+
 use crate::lex::span::{Pos, Span, Spanned};
 
 /// Atom, either [`Ident`] or [`Literal`].
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Atom<'s> {
     Ident(Ident<'s>),
-    Literal(Literal<'s>),
+    Literal(LiteralData<'s>),
 }
 
 /// Identifier
@@ -18,19 +20,19 @@ pub struct Ident<'s> {
 
 /// Literal, like string, integer, float or boolean
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Literal<'s> {
+pub struct LiteralData<'s> {
     pub text: &'s str,
     pub pos: Pos,
-    pub ty: LiteralType,
+    pub ty: Literal<'s>,
 }
 
-/// Type of [`Literal`]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum LiteralType {
-    String,
-    Integer,
-    Float,
-    Bool,
+/// Parsed literal
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Literal<'s> {
+    String(Cow<'s, str>),
+    Integer(usize),
+    Float((usize, usize)),
+    Bool(bool),
 }
 
 impl Spanned for Atom<'_> {
@@ -46,7 +48,7 @@ impl Spanned for Ident<'_> {
         Span::new(self.pos.clone(), self.pos.clone().skip(self.text))
     }
 }
-impl Spanned for Literal<'_> {
+impl Spanned for LiteralData<'_> {
     fn span(&self) -> Span {
         Span::new(self.pos.clone(), self.pos.clone().skip(self.text))
     }

@@ -1,7 +1,7 @@
 //! Entire document, and define statement
 
 use super::{
-    atom::{Ident, Literal},
+    atom::{Ident, LiteralData},
     block::{Block, CodeBlock, StructBlock, StructProperty},
     expr::{Expression, MaybeWrapped},
     single::{Colon, Define, ParenClose, ParenOpen, RightArrow},
@@ -138,7 +138,7 @@ pub struct DefineMeta<'s> {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum DefineMetaArgs<'s> {
     Single(Ident<'s>),
-    Pair(Ident<'s>, Literal<'s>),
+    Pair(Ident<'s>, LiteralData<'s>),
 }
 
 /// See [`DefineStmt`].
