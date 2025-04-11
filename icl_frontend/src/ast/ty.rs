@@ -1,5 +1,7 @@
 //! Type
 
+use crate::lex::span::Spanned;
+
 use super::atom::Ident;
 
 /// Type. Syntax for types aren't implemented yet, so temporally it just [`Ident`].
@@ -29,4 +31,11 @@ pub struct Type<'s> {
         note = "`Type` isn't just an `Ident`, this will be changed in future. See `Type` documentation for more"
     )]
     pub ident: Ident<'s>,
+}
+
+impl Spanned for Type<'_> {
+    #[expect(deprecated_in_future)]
+    fn span(&self) -> crate::lex::span::Span {
+        self.ident.span()
+    }
 }

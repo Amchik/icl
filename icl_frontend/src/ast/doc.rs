@@ -3,7 +3,7 @@
 use super::{
     atom::{Ident, Literal},
     block::{Block, CodeBlock, StructBlock, StructProperty},
-    expr::Expression,
+    expr::{Expression, MaybeWrapped},
     single::{Colon, Define, ParenClose, ParenOpen, RightArrow},
     stmt::Terminated,
     ty::Type,
@@ -157,5 +157,6 @@ pub enum DefineStmtBody<'s> {
     Struct(Block<StructBlock<'s>>),
 
     /// Expression
-    PlainExpr(Terminated<Expression<'s>>),
+    PlainExpr(Terminated<MaybeWrapped<Expression<'s>>>),
 }
+

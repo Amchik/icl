@@ -6,7 +6,7 @@
 //!     ast::{
 //!         atom::{Atom, Ident, Literal, LiteralType},
 //!         doc::{DefineHint, DefineStmt, DefineStmtBody, Document, DocumentStmt},
-//!         expr::Expression, stmt::Terminated,
+//!         expr::{Expression, MaybeWrapped}, stmt::Terminated,
 //!     },
 //!     lex::Lex,
 //!     parser::{Parse, TokenStream},
@@ -31,11 +31,11 @@
 //!         name: Ident { text: "foo", .. },
 //!         hint: DefineHint::None,
 //!         body: DefineStmtBody::PlainExpr(Terminated(
-//!             Expression::Atom(Atom::Literal(Literal {
+//!             MaybeWrapped::Normal(Expression::Atom(Atom::Literal(Literal {
 //!                 text: "42",
 //!                 ty: LiteralType::Integer,
 //!                 ..
-//!             })),
+//!             }))),
 //!             _
 //!         )),
 //!         ..
@@ -44,5 +44,6 @@
 //! ```
 
 pub mod ast;
+pub mod ast_lints;
 pub mod lex;
 pub mod parser;

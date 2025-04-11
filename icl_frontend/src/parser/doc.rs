@@ -7,12 +7,12 @@ use crate::{
             DefineArgs, DefineHint, DefineMeta, DefineMetaArgs, DefineOutput, DefineStmt,
             DefineStmtBody, DefineType, Document, DocumentStmt,
         },
-        expr::Expression,
+        expr::{Expression, MaybeWrapped},
         single::{Colon, Define, ParenClose, ParenOpen, RightArrow, Semicolon, SingleTokenTy},
         stmt::Terminated,
         ty::Type,
     },
-    lex::{self, TokenData, token::Token},
+    lex::{self, token::Token, TokenData},
     parser::call_args,
 };
 
@@ -147,7 +147,7 @@ where
                 .with_help(&["try use `struct` instead"])
                 .into()),
             _ => {
-                let expr = Expression::parse(token_stream)?;
+                let expr = MaybeWrapped::<Expression>::parse(token_stream)?;
                 let semicolon = Semicolon::parse(token_stream)?;
 
                 Ok(Self {

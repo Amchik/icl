@@ -1,6 +1,6 @@
 //! Atom, Identifier and Literals
 
-use crate::lex::span::Pos;
+use crate::lex::span::{Pos, Span, Spanned};
 
 /// Atom, either [`Ident`] or [`Literal`].
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -31,6 +31,25 @@ pub enum LiteralType {
     Integer,
     Float,
     Bool,
+}
+
+impl Spanned for Atom<'_> {
+    fn span(&self) -> Span {
+        match self {
+            Self::Ident(s) => s.span(),
+            Self::Literal(s) => s.span(),
+        }
+    }
+}
+impl Spanned for Ident<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.pos.clone(), self.pos.clone().skip(self.text))
+    }
+}
+impl Spanned for Literal<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.pos.clone(), self.pos.clone().skip(self.text))
+    }
 }
 
 impl Ident<'_> {

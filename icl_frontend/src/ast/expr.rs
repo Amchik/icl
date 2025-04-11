@@ -1,6 +1,6 @@
 //! Expressions
 
-use crate::lex::span::Pos;
+use crate::lex::span::{Pos, Span, Spanned};
 
 use super::{
     atom::Atom,
@@ -61,4 +61,56 @@ pub struct MemberExpr<'s> {
     pub lhs: Box<Expression<'s>>,
     pub dot: Dot,
     pub rhs: Atom<'s>,
+}
+
+impl Spanned for Expression<'_> {
+    fn span(&self) -> Span {
+        match self {
+            Self::Atom(s) => s.span(),
+            Self::Call(s) => s.span(),
+            Self::Infix(s) => s.span(),
+            Self::Prefix(s) => s.span(),
+            Self::Member(s) => s.span(),
+        }
+    }
+}
+
+impl Spanned for CallExpr<'_> {
+    fn span(&self) -> Span {
+        Span::new(
+            self.callee.span().start,
+            self.par_close.pos.clone().skip(")"),
+        )
+    }
+}
+
+impl Spanned for PrefixExpr<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.pos.clone(), self.rhs.span().end)
+    }
+}
+
+impl Spanned for InfixExpr<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.lhs.span().start, self.lhs.span().end)
+    }
+}
+
+impl Spanned for MemberExpr<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.lhs.span().start, self.lhs.span().end)
+    }
+}
+
+impl<S: Spanned> Spanned for MaybeWrapped<S> {
+    fn span(&self) -> Span {
+        match self {
+            Self::Normal(s) => s.span(),
+            Self::Wrapped {
+                par_open,
+                par_close,
+                ..
+            } => Span::new(par_open.pos.clone(), par_close.pos.clone().skip(")")),
+        }
+    }
 }

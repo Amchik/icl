@@ -1,9 +1,7 @@
 use std::{env, fs, process::ExitCode};
 
 use icl_frontend::{
-    ast::doc::Document,
-    lex::Lex,
-    parser::{Parse, TokenStream},
+    ast::doc::Document, ast_lints, lex::Lex, parser::{Parse, TokenStream}
 };
 
 fn main() -> ExitCode {
@@ -25,7 +23,31 @@ fn main() -> ExitCode {
     let doc = Document::parse(&mut parser);
 
     match doc {
-        Ok(r) => println!("{r:#?}"),
+        Ok(r) => {
+            for lint in ast_lints::LINTS {
+                let warns = (lint.worker)(&r);
+                if warns.is_empty() {
+                    continue;
+                }
+                println!("==== LINT {}::{} FOUND {} warning(s)", lint.category, lint.name, warns.len());
+                for warn in warns {
+                    println!("warning: {}", warn.title);
+                    let len = warn.span.end.column - warn.span.start.column;
+                    let start = warn.span.start.column;
+
+                    let line = code.lines().nth(warn.span.start.line as usize - 1).expect("...");
+
+                    println!(" {: >3} | {line}", warn.span.start.line);
+                    println!("     | {}^{}", " ".repeat(start - 1), "~".repeat(len - 1));
+                    for note in &warn.notes[..] {
+                        println!("     = note: {note}");
+                    }
+                    for help in &warn.help[..] {
+                        println!("     = help: {help}");
+                    }
+                }
+            }
+        },
         Err(e) => {
             eprintln!("ЕГГОГ:\n{e:#?}");
             return ExitCode::FAILURE;

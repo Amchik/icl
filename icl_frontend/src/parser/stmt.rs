@@ -8,7 +8,7 @@ use crate::{
             DefineArg, DefineArgs, DefineHint, DefineMeta, DefineOutput, DefineStmt,
             DefineStmtBody, DefineType,
         },
-        expr::{CallExpr, Expression},
+        expr::{CallExpr, Expression, MaybeWrapped},
         single::{
             Assign, Colon, Define, IfKeyword, ParenClose, ParenOpen, ReturnKeyword, Semicolon,
             SingleTokenTy, WhileKeyword,
@@ -16,7 +16,7 @@ use crate::{
         stmt::{AssignStmt, IfElseStmt, IfStmt, ReturnStmt, Statement, Terminated, WhileStmt},
         ty::Type,
     },
-    lex::{self, TokenData, token::Token},
+    lex::{self, token::Token, TokenData},
     parser::call_args,
 };
 
@@ -227,7 +227,7 @@ where
             }))
         }
         _ => {
-            let expr = Expression::parse(token_stream)?;
+            let expr = MaybeWrapped::<Expression>::parse(token_stream)?;
             let semicolon = token_stream.consume(Token::Semicolon)?.pos;
             let semicolon = Semicolon::from_pos(semicolon);
 

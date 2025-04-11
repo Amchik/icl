@@ -1,5 +1,7 @@
 //! Statements in code blocks
 
+use crate::lex::span::{Span, Spanned};
+
 use super::{
     block::CodeBlock,
     doc::DefineStmt,
@@ -118,4 +120,10 @@ pub struct WhileStmt<'s> {
 pub struct ReturnStmt<'s> {
     pub ret: ReturnKeyword,
     pub value: Option<Expression<'s>>,
+}
+
+impl<S: Spanned> Spanned for Terminated<S> {
+    fn span(&self) -> Span {
+        Span::new(self.0.span().start, self.1.pos.clone().skip(";"))
+    }
 }

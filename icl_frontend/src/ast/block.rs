@@ -1,5 +1,7 @@
 //! Code and structure blocks
 
+use crate::lex::span::{Span, Spanned};
+
 use super::{
     atom::Ident,
     single::{BraceClose, BraceOpen, Colon, Ellipsis},
@@ -60,4 +62,30 @@ pub struct CodeBlock<'s> {
     pub start: BraceOpen,
     pub stmts: Vec<Statement<'s>>,
     pub end: BraceClose,
+}
+
+impl<B: Spanned> Spanned for Block<B> {
+    #[inline]
+    fn span(&self) -> Span {
+        match self {
+            Self::Normal(b) => b.span(),
+            Self::Builtin(b) => b.span(),
+        }
+    }
+}
+
+impl Spanned for BuiltinBlock {
+    fn span(&self) -> Span {
+        Span::new(self.start.pos.clone(), self.end.pos.clone().skip(";"))
+    }
+}
+impl Spanned for StructBlock<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.start.pos.clone(), self.end.pos.clone().skip(";"))
+    }
+}
+impl Spanned for CodeBlock<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.start.pos.clone(), self.end.pos.clone().skip(";"))
+    }
 }

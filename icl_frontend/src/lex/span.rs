@@ -11,17 +11,10 @@ impl Span {
     pub const fn new(start: Pos, end: Pos) -> Self {
         Self { start, end }
     }
-
-    pub const fn wrap<T>(self, value: T) -> Spanned<T> {
-        Spanned { span: self, value }
-    }
 }
 
-/// Value `T` wrapped in [`Span`].
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Spanned<T: ?Sized> {
-    pub span: Span,
-    pub value: T,
+pub trait Spanned {
+    fn span(&self) -> Span;
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -33,3 +26,21 @@ pub struct Pos {
     /// Index of position in raw offset (not chars count)
     pub index: usize,
 }
+
+impl Pos {
+    // NOTE: all types are big enough
+    #[allow(clippy::arithmetic_side_effects)]
+    pub fn skip(mut self, v: &str) -> Self {
+        for c in v.chars() {
+            if c == '\n' {
+                self.column = 0;
+                self.line += 1;
+            } else if c != '\r'  {
+                self.column += 1;
+            }
+        }
+        self.index += v.len();
+        self
+    }
+}
+
