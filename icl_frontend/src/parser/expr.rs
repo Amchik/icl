@@ -1,7 +1,7 @@
 //! Expressions parsing.
 
 // main idea of implementation pasted from:
-// https://github.com/DemetryF/smpl/blob/06e92c2a/compiler/frontend/smplc_parse/src/parse/expr.rs
+// https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html
 use crate::{
     ast::{
         atom::Atom,
