@@ -105,7 +105,7 @@ impl Token {
     ///
     /// # Example
     /// ```
-    /// use icl_frontend::lex::token::Token;
+    /// use quark_frontend::lex::token::Token;
     ///
     /// assert_eq!(Token::from_word("struct"), Token::KwStruct);
     /// assert_eq!(Token::from_word("not_keyword"), Token::Ident);

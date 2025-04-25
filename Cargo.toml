@@ -1,5 +1,5 @@
 [workspace]
-members = [ "icl_cringe","icl_frontend"]
+members = [ "icl_cringe", "quark_frontend", "quark_hir"]
 resolver = "3"
 
 [workspace.lints.rust]
@@ -10,6 +10,9 @@ deprecated_in_future = "warn"
 # Deny unexpected overflows
 arithmetic_side_effects = "warn"
 as_conversions = "warn"
+
+# Warn on `ref_counter.clone()`
+clone_on_ref_ptr = "warn"
 
 # Deny .unwrap() calls
 unwrap_used = "deny"

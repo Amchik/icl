@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-icl_frontend = { path = "../icl_frontend" }
+quark_frontend = { path = "../quark_frontend" }
 
 [lints]
 #workspace = true

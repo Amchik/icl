@@ -6,9 +6,16 @@ version = 4
 name = "icl_cringe"
 version = "0.1.0"
 dependencies = [
- "icl_frontend",
+ "quark_frontend",
 ]
 
 [[package]]
-name = "icl_frontend"
+name = "quark_frontend"
 version = "0.1.0"
+
+[[package]]
+name = "quark_hir"
+version = "0.1.0"
+dependencies = [
+ "quark_frontend",
+]

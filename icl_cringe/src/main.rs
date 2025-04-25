@@ -1,6 +1,6 @@
 use std::{env, fs, process::ExitCode};
 
-use icl_frontend::{
+use quark_frontend::{
     ast::doc::Document, ast_lints, lex::Lex, parser::{Parse, TokenStream}
 };
 
@@ -24,6 +24,7 @@ fn main() -> ExitCode {
 
     match doc {
         Ok(r) => {
+            println!("{r:#?}");
             for lint in ast_lints::LINTS {
                 let warns = (lint.worker)(&r);
                 if warns.is_empty() {

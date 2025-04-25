@@ -1,8 +1,8 @@
-//! # ICL Programming Language Frontend
+//! # Quark Programming Language Frontend
 //!
 //! Example of usage:
 //! ```
-//! use icl_frontend::{
+//! use quark_frontend::{
 //!     ast::{
 //!         atom::{Atom, Ident, Literal, LiteralType},
 //!         doc::{DefineHint, DefineStmt, DefineStmtBody, Document, DocumentStmt},

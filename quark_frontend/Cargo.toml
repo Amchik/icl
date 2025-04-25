@@ -1,5 +1,5 @@
 [package]
-name = "icl_frontend"
+name = "quark_frontend"
 version = "0.1.0"
 edition = "2024"
 

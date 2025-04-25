@@ -59,7 +59,7 @@ impl Ident<'_> {
     ///
     /// # Example
     /// ```
-    /// # use icl_frontend::{ast::atom::Ident, lex::span::Pos};
+    /// # use quark_frontend::{ast::atom::Ident, lex::span::Pos};
     /// # let pos = Pos { line: 1, column: 1, index: 0, };
     ///
     /// let a = Ident { text: "foobar", pos: pos.clone() };
@@ -78,7 +78,7 @@ impl Ident<'_> {
     ///
     /// # Example
     /// ```
-    /// # use icl_frontend::{ast::atom::Ident, lex::span::Pos};
+    /// # use quark_frontend::{ast::atom::Ident, lex::span::Pos};
     /// # let pos = Pos { line: 1, column: 1, index: 0, };
     ///
     /// let ugly = Ident {
